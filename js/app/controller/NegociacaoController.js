@@ -9,8 +9,11 @@ class NegociacaoController {
 
         //pegando o id da div que esta no HTML.
         this._negociacaoView = new NegociacaoView($("#negocioesView"));
-
         this._negociacaoView.update(this._listaNegociacao);
+        
+        this._mensagem = new Mensagem();
+        this._mensagemView = new MensagemView($("#mensagemView"));
+        this._mensagemView.update(this._mensagem);
     }
 
     adiciona(event){
@@ -18,6 +21,10 @@ class NegociacaoController {
 
         this._listaNegociacao.adiciona(this._adicionarFormulario());
         this._negociacaoView.update(this._listaNegociacao);
+
+        this._mensagem.texto = "Negociação Adicionado com Sucesso!";
+        this._mensagemView.update(this._mensagem);
+
         this._limparFormulario();
     }
 
