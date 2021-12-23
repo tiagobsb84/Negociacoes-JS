@@ -4,28 +4,36 @@ class NegociacaoController {
         this._inputData = $("#data");
         this._inputQuantidade = $("#quantidade");
         this._inputValor = $("#valor");
+
+        this._listaNegociacao = new ListaNegociacao();
+
+        //pegando o id da div que esta no HTML.
+        this._negociacaoView = new NegociacaoView($("#negocioesView"));
+
+        this._negociacaoView.update(this._listaNegociacao);
     }
 
     adiciona(event){
         event.preventDefault();
 
-        //esse e para tira o erro do mes de adiciona um mes e ele retorna um mes anterior.
-        let data = new Date(...this._inputData.value
-            .split("-")
-            .map((item,indice) => item - indice % 2 ));
-        
-        let negociacao = new Negociacao(
-            data,
+        this._listaNegociacao.adiciona(this._adicionarFormulario());
+        this._negociacaoView.update(this._listaNegociacao);
+        this._limparFormulario();
+    }
+
+    _adicionarFormulario(){
+        return new Negociacao(
+            DataHelper.textoParaData(this._inputData.value),
             this._inputQuantidade.value,
             this._inputValor.value
         );
+    }
 
-        //somente para trabalhar o formato da data.
-        let diaMesAno = negociacao.data.getDay() 
-        + "/" + (negociacao.data.getMonth() + 1)
-        + "/" + negociacao.data.getFullYear();
+    _limparFormulario() {
+        this._inputData.value = "";
+        this._inputQuantidade.value = 1;
+        this._inputValor.value = 0.0;
 
-        console.log(diaMesAno);
-        
+        this._inputData.focus();
     }
 }
